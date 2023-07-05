@@ -19,6 +19,7 @@ class Sweeper {
         this.column = columnNum
         this.bomb = bombNum
 
+
         for(let i = 0; i < this.row; i++){
             const rows = []
             for(let j = 0; j < this.column; j++){
@@ -26,7 +27,28 @@ class Sweeper {
             }
             this.gameBoard.push(rows)
         }
+        let hasPlaced = false
+        let rRow
+        let rColumn
+
+        for (let i = 1; i <= this.bomb; i++){
+            hasPlaced = false
+            while(!hasPlaced){
+                rRow = Math.floor(Math.random()* this.row)
+                rColumn = Math.floor(Math.random()* this.column)
+                if(this.gameBoard[rRow][rColumn] !== -1){
+                    hasPlaced = true
+                    this.gameBoard[rRow][rColumn] = -1
+                }
+            }
+        }
         console.log(this.gameBoard)
+    }
+
+    clearBoard () {
+        while(this.gameBoard.length !== 0){
+            this.gameBoard.pop()
+        }
     }
 
     updateRadars () {
@@ -42,6 +64,7 @@ const sweep = new Sweeper()
 
 // Tests //
 const testBoard = () => {
+    sweep.clearBoard()
     sweep.makeBoard(9,9,10)
 }
 
