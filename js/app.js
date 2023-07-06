@@ -1,7 +1,21 @@
 console.log("Hello!")
 
 // DOM VARIABLES //
-let boardBtn = document.getElementById('makeBoard')
+const colors = [
+    'gray',
+    'blue',
+    'green',
+    'purple',
+    'black',
+    'teal',
+    'brown',
+    'darkblue',
+    'orange',
+    'red'
+]
+
+const boardBtn = document.getElementById('makeBoard')
+const board = document.getElementById('board')
 
 
 // Sweeper CLASS //
@@ -84,6 +98,60 @@ class Sweeper {
             this.gameBoard[radarRow][radarColumn]++
         }
     }
+
+    constructBoardObj () {
+        for(let i = 0; i < this.row; i++){
+            for(let j = 0; j < this.column; j++){
+                const boardPiece = {}
+
+                boardPiece.rowStart = i + 2
+                boardPiece.rowEnd = i + 3
+                boardPiece.colStart = j + 1
+                boardPiece.colEnd = j + 2
+
+                boardPiece.number = this.gameBoard[i][j]
+
+                if(boardPiece.number === -1){
+                    boardPiece.isBomb = true
+                }else{
+                    boardPiece.isBomb = false
+                }
+
+                if(boardPiece.number === 0){
+                    boardPiece.isEmpty = true
+                }else{
+                    boardPiece.isEmpty = false
+                }
+
+                this.boardTokens.push(boardPiece)
+            }
+        }
+    }
+
+    constructBoardEls(){
+        for(let i = 0; i < this.boardTokens.length; i++){
+
+            const squareEl = document.createElement('div')
+
+            if(this.boardTokens[i].number >= 0){
+                squareEl.style.backgroundColor = colors[this.boardTokens[i].number]
+            }else{
+                squareEl.style.backgroundColor = colors[9]
+            }
+            
+            squareEl.style.gridColumn = `${this.boardTokens[i].colStart} / ${this.boardTokens[i].colEnd}`
+            squareEl.style.gridRow = `${this.boardTokens[i].rowStart} / ${this.boardTokens[i].rowEnd}`
+
+            if(this.boardTokens[i].isBomb){
+                squareEl.setAttribute('id', 'bomb')
+            }else if (this.boardTokens[i].isEmpty){
+                squareEl.setAttribute('id', 'empty')
+            }
+
+            this.boardTokens[i].squareEl = squareEl
+            board.appendChild(squareEl)
+        }
+    }
 }
 
 const sweep = new Sweeper()
@@ -92,6 +160,8 @@ const sweep = new Sweeper()
 const testBoard = () => {
     sweep.clearBoard()
     sweep.makeBoard(9,9,10)
+    sweep.constructBoardObj()
+    sweep.constructBoardEls()
 }
 
 // DOM EVENTS //
