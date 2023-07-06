@@ -39,6 +39,7 @@ class Sweeper {
                 if(this.gameBoard[rRow][rColumn] !== -1){
                     hasPlaced = true
                     this.gameBoard[rRow][rColumn] = -1
+                    this.updateRadars(rRow, rColumn)
                 }
             }
         }
@@ -51,12 +52,37 @@ class Sweeper {
         }
     }
 
-    updateRadars () {
-
+    updateRadars (bRow, bColumn) {
+        if((bRow - 1) >= 0){
+            this.updateRadar(bRow - 1, bColumn)
+        }
+        if((bRow - 1) >= 0 && (bColumn - 1) >= 0){
+            this.updateRadar(bRow - 1, bColumn - 1)
+        }
+        if((bRow - 1) >= 0 && (bColumn + 1) < this.column){
+            this.updateRadar(bRow - 1, bColumn + 1)
+        }
+        if((bRow + 1) < this.row){
+            this.updateRadar(bRow + 1, bColumn)
+        }
+        if((bRow + 1) < this.row && (bColumn - 1) >= 0){
+            this.updateRadar(bRow + 1, bColumn - 1)
+        }
+        if((bRow + 1) < this.row && (bColumn + 1) < this.column){
+            this.updateRadar(bRow + 1, bColumn + 1)
+        }
+        if((bColumn - 1) >= 0){
+            this.updateRadar(bRow, bColumn - 1)
+        }
+        if((bColumn + 1) < this.column){
+            this.updateRadar(bRow, bColumn + 1)
+        }
     }
 
-    updateRadar () {
-
+    updateRadar (radarRow, radarColumn) {
+        if(this.gameBoard[radarRow][radarColumn] !== -1){
+            this.gameBoard[radarRow][radarColumn]++
+        }
     }
 }
 
