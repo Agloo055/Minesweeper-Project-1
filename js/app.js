@@ -33,7 +33,6 @@ class Sweeper {
         this.column = columnNum
         this.bomb = bombNum
 
-
         for(let i = 0; i < this.row; i++){
             const rows = []
             for(let j = 0; j < this.column; j++){
@@ -57,7 +56,21 @@ class Sweeper {
                 }
             }
         }
-        console.log(this.gameBoard)
+        //console.log(this.gameBoard)
+        let rulesArea = '"'
+        for (let i = 0; i < this.column; i++){
+            rulesArea += `rules`
+            if((i+1)!== this.column){
+                rulesArea += ` `
+            }else{
+                rulesArea += '"'
+            }
+        }
+        // console.log(rulesArea)
+        // console.log(board.style.gridTemplateAreas)
+        board.style.gridTemplateAreas = rulesArea
+        
+        
     }
 
     clearBoard () {
