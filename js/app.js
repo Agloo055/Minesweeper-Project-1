@@ -20,12 +20,15 @@ const board = document.getElementById('board')
 
 // Sweeper CLASS //
 class Sweeper {
-    constructor(row=0,column=0,bomb=0) {
+    constructor(row=3,column=3,bomb=1) {
         this.row = row
         this.column = column
         this.bomb = bomb
         this.gameBoard = []
         this.boardTokens = []
+        this.win = false
+        this.loss = false
+        this.gameOver = false
     }
 
     makeBoard (rowNum, columnNum, bombNum) {
@@ -57,19 +60,20 @@ class Sweeper {
             }
         }
         //console.log(this.gameBoard)
-        let rulesArea = '"'
+        let infoArea = '"'
         for (let i = 0; i < this.column; i++){
-            rulesArea += `rules`
+            infoArea += `info`
             if((i+1)!== this.column){
-                rulesArea += ` `
+                infoArea += ` `
             }else{
-                rulesArea += '"'
+                infoArea += '"'
             }
         }
-        // console.log(rulesArea)
+        // console.log(infoArea)
         // console.log(board.style.gridTemplateAreas)
-        board.style.gridTemplateAreas = rulesArea
-        
+        board.style.gridTemplateAreas = infoArea
+        this.constructBoardObj()
+        this.constructBoardEls()
         
     }
 
@@ -161,10 +165,14 @@ class Sweeper {
                 squareEl.setAttribute('id', 'empty')
             }
 
+            squareEl.isRevealed = false
+
             this.boardTokens[i].squareEl = squareEl
             board.appendChild(squareEl)
         }
     }
+
+    
 }
 
 const sweep = new Sweeper()
@@ -173,8 +181,10 @@ const sweep = new Sweeper()
 const testBoard = () => {
     sweep.clearBoard()
     sweep.makeBoard(9,9,10)
-    sweep.constructBoardObj()
-    sweep.constructBoardEls()
+}
+
+const testReveal = () => {
+
 }
 
 // DOM EVENTS //

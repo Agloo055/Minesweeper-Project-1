@@ -2,7 +2,7 @@
     display: inline-grid;
     grid-gap: 5px;
     grid-template-areas: 
-    "rules rules rules";
+    "info info info";
     grid-template-columns: 40px;
     grid-template-rows: 50px;
     grid-auto-columns: 40px;
@@ -44,10 +44,17 @@
     grid-row: 3 / 4;
 }*/
 
-#rules {
-    grid-area: rules;
+#info {
+    grid-area: info;
     display: flex;
     justify-content: space-around;
+    align-items: center;
     background-color: blueviolet;
     height: 50px;
+}
+
+#timer, #flags {
+    background-color: black;
+    color: red;
+    font-size: 25px;
 }
