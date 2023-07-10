@@ -186,38 +186,78 @@ class Sweeper {
                 return parseInt(i)
             })
             
-            let idxLoc = 0
-            this.boardTokens.forEach((elem, idx) => {
-                if(elem.rowStart === gridA[0] && elem.colStart === gridA[1] && elem.rowEnd === gridA[2] && elem.colEnd === gridA[3]){
-                    idxLoc = idx
-                    return
-                }
-            })
-            if(!this.boardTokens[idxLoc].isRevealed)
-            {
-                //console.log(this.boardTokens[idxLoc])
-                this.revealSpace(idxLoc)
-            }
+            let idxLoc = this.getTokenIndex(gridA[0], gridA[1])
+            console.log(idxLoc)
+            //console.log(this.boardTokens[idxLoc])
+            this.revealSpace(idxLoc)
         }
     }
 
     revealSpace (index) {
-        this.boardTokens[index].isRevealed = true
-        if(this.boardTokens[index].number >= 0){
-            this.boardTokens[index].squareEl.style.backgroundColor = colors[this.boardTokens[index].number]
-        }else{
-            this.boardTokens[index].squareEl.style.backgroundColor = colors[9]
-        }
-        console.log("Revealed!")
-        if(this.boardTokens[index].squareEl.classList.contains('empty')){
-            this.flood(index)
-        }else if(this.boardTokens[index].squareEl.classList.contains('bomb')){
-            console.log('bomb!')
+        if(!this.boardTokens[index].isRevealed){
+            this.boardTokens[index].isRevealed = true
+            if(this.boardTokens[index].number >= 0){
+                this.boardTokens[index].squareEl.style.backgroundColor = colors[this.boardTokens[index].number]
+            }else{
+                this.boardTokens[index].squareEl.style.backgroundColor = colors[9]
+            }
+            console.log("Revealed!")
+            if(this.boardTokens[index].squareEl.classList.contains('empty')){
+                this.flood(index)
+            }else if(this.boardTokens[index].squareEl.classList.contains('bomb')){
+                console.log('bomb!')
+            }
+            console.log(this.boardTokens[index])
         }
     }
 
     flood (index) {
         console.log('flood!')
+        //console.log(this.boardTokens[index])
+        let tIndex = 0
+        if((this.boardTokens[index].rowStart - 1) >= 2){
+            tIndex = this.getTokenIndex(this.boardTokens[index].rowStart - 1, this.boardTokens[index].colStart)
+            this.revealSpace(tIndex)
+        }
+        if((this.boardTokens[index].rowStart - 1) >= 2 && (this.boardTokens[index].colStart - 1) >= 1){
+            tIndex = this.getTokenIndex(this.boardTokens[index].rowStart - 1, this.boardTokens[index].colStart - 1)
+            this.revealSpace(tIndex)
+        }
+        if((this.boardTokens[index].rowStart - 1) >= 2 && (this.boardTokens[index].colStart + 1) < (this.column + 2)){
+            tIndex = this.getTokenIndex(this.boardTokens[index].rowStart - 1, this.boardTokens[index].colStart + 1)
+            this.revealSpace(tIndex)
+        }
+        if((this.boardTokens[index].rowStart + 1) < this.row + 2){
+            tIndex = this.getTokenIndex(this.boardTokens[index].rowStart + 1, this.boardTokens[index].colStart)
+            this.revealSpace(tIndex)
+        }
+        if((this.boardTokens[index].rowStart + 1) < this.row + 2 && (this.boardTokens[index].colStart - 1) >= 1){
+            tIndex = this.getTokenIndex(this.boardTokens[index].rowStart + 1, this.boardTokens[index].colStart - 1)
+            this.revealSpace(tIndex)
+        }
+        if((this.boardTokens[index].rowStart + 1) < this.row + 2 && (this.boardTokens[index].colStart + 1) < (this.column + 2)){
+            tIndex = this.getTokenIndex(this.boardTokens[index].rowStart + 1, this.boardTokens[index].colStart + 1)
+            this.revealSpace(tIndex)
+        }
+        if((this.boardTokens[index].colStart - 1) >= 1){
+            tIndex = this.getTokenIndex(this.boardTokens[index].rowStart, this.boardTokens[index].colStart - 1)
+            this.revealSpace(tIndex)
+        }
+        if((this.boardTokens[index].colStart + 1) < (this.column + 2)){
+            tIndex = this.getTokenIndex(this.boardTokens[index].rowStart, this.boardTokens[index].colStart + 1)
+            this.revealSpace(tIndex)
+        }
+    }
+
+    getTokenIndex (rowStart, colStart){
+        let index = 0
+        this.boardTokens.forEach((elem, idx) => {
+            if(elem.rowStart === rowStart && elem.colStart === colStart){    
+                index = idx
+                return
+            }
+        })
+        return index
     }
 }
 
