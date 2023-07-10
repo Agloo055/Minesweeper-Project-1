@@ -15,8 +15,8 @@ const colors = [
 ]
 
 const boardBtn = document.getElementById('makeBoard')
-const board = document.getElementById('board')
-
+const boardEl = document.getElementById('board')
+const revealBtn = document.getElementById('reveal')
 
 // Sweeper CLASS //
 class Sweeper {
@@ -71,10 +71,11 @@ class Sweeper {
         }
         // console.log(infoArea)
         // console.log(board.style.gridTemplateAreas)
-        board.style.gridTemplateAreas = infoArea
-        this.constructBoardObj()
-        this.constructBoardEls()
-        
+        boardEl.style.gridTemplateAreas = infoArea
+        // this.constructBoardObj()
+        // this.constructBoardEls()
+        // console.log(this.boardTokens)
+        // console.log(this.gameBoard)
     }
 
     clearBoard () {
@@ -122,8 +123,8 @@ class Sweeper {
                 const boardPiece = {}
 
                 boardPiece.rowStart = i + 2
-                boardPiece.rowEnd = i + 3
                 boardPiece.colStart = j + 1
+                boardPiece.rowEnd = i + 3
                 boardPiece.colEnd = j + 2
 
                 boardPiece.number = this.gameBoard[i][j]
@@ -140,6 +141,8 @@ class Sweeper {
                     boardPiece.isEmpty = false
                 }
 
+                boardPiece.isRevealed = false
+
                 this.boardTokens.push(boardPiece)
             }
         }
@@ -150,29 +153,72 @@ class Sweeper {
 
             const squareEl = document.createElement('div')
 
-            if(this.boardTokens[i].number >= 0){
-                squareEl.style.backgroundColor = colors[this.boardTokens[i].number]
-            }else{
-                squareEl.style.backgroundColor = colors[9]
-            }
+            // if(this.boardTokens[i].number >= 0){
+            //     squareEl.style.backgroundColor = colors[this.boardTokens[i].number]
+            // }else{
+            //     squareEl.style.backgroundColor = colors[9]
+            // }
+
+            squareEl.style.backgroundColor = '#333333'
             
             squareEl.style.gridColumn = `${this.boardTokens[i].colStart} / ${this.boardTokens[i].colEnd}`
             squareEl.style.gridRow = `${this.boardTokens[i].rowStart} / ${this.boardTokens[i].rowEnd}`
 
+            squareEl.classList.add('square')
+
             if(this.boardTokens[i].isBomb){
-                squareEl.setAttribute('id', 'bomb')
+                squareEl.classList.add('bomb')
             }else if (this.boardTokens[i].isEmpty){
-                squareEl.setAttribute('id', 'empty')
+                squareEl.classList.add('empty')
             }
 
-            squareEl.isRevealed = false
-
             this.boardTokens[i].squareEl = squareEl
-            board.appendChild(squareEl)
+            boardEl.appendChild(squareEl)
+        }
+        //console.log(this.boardTokens)
+    }
+
+    revealSquare (square) {
+        if(square.classList.contains('square')){
+            //console.log(square)
+            let gridA = square.style.gridArea.split(" / ")
+            gridA = gridA.map((i) => {
+                return parseInt(i)
+            })
+            
+            let idxLoc = 0
+            this.boardTokens.forEach((elem, idx) => {
+                if(elem.rowStart === gridA[0] && elem.colStart === gridA[1] && elem.rowEnd === gridA[2] && elem.colEnd === gridA[3]){
+                    idxLoc = idx
+                    return
+                }
+            })
+            if(!this.boardTokens[idxLoc].isRevealed)
+            {
+                //console.log(this.boardTokens[idxLoc])
+                this.revealSpace(idxLoc)
+            }
         }
     }
 
-    
+    revealSpace (index) {
+        this.boardTokens[index].isRevealed = true
+        if(this.boardTokens[index].number >= 0){
+            this.boardTokens[index].squareEl.style.backgroundColor = colors[this.boardTokens[index].number]
+        }else{
+            this.boardTokens[index].squareEl.style.backgroundColor = colors[9]
+        }
+        console.log("Revealed!")
+        if(this.boardTokens[index].squareEl.classList.contains('empty')){
+            this.flood(index)
+        }else if(this.boardTokens[index].squareEl.classList.contains('bomb')){
+            console.log('bomb!')
+        }
+    }
+
+    flood (index) {
+        console.log('flood!')
+    }
 }
 
 const sweep = new Sweeper()
@@ -181,11 +227,18 @@ const sweep = new Sweeper()
 const testBoard = () => {
     sweep.clearBoard()
     sweep.makeBoard(9,9,10)
+    sweep.constructBoardObj()
+    sweep.constructBoardEls()
+    //console.log(sweep.boardTokens)
 }
 
-const testReveal = () => {
+const testReveal = (e) => {
+    //console.log(sweep.boardTokens[0])
+    sweep.revealSquare(e.target)
+    //console.log(e.target)
 
 }
 
 // DOM EVENTS //
 boardBtn.addEventListener('click', testBoard)
+boardEl.addEventListener('click', testReveal)
