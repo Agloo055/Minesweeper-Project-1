@@ -233,7 +233,7 @@ class Sweeper {
             tIndex = this.getTokenIndex(this.boardTokens[index].rowStart - 1, this.boardTokens[index].colStart - 1)
             this.revealSpace(tIndex)
         }
-        if((this.boardTokens[index].rowStart - 1) >= 2 && (this.boardTokens[index].colStart + 1) < (this.column + 2)){
+        if((this.boardTokens[index].rowStart - 1) >= 2 && (this.boardTokens[index].colStart + 1) < (this.column + 1)){
             tIndex = this.getTokenIndex(this.boardTokens[index].rowStart - 1, this.boardTokens[index].colStart + 1)
             this.revealSpace(tIndex)
         }
@@ -245,7 +245,7 @@ class Sweeper {
             tIndex = this.getTokenIndex(this.boardTokens[index].rowStart + 1, this.boardTokens[index].colStart - 1)
             this.revealSpace(tIndex)
         }
-        if((this.boardTokens[index].rowStart + 1) < this.row + 2 && (this.boardTokens[index].colStart + 1) < (this.column + 2)){
+        if((this.boardTokens[index].rowStart + 1) < this.row + 2 && (this.boardTokens[index].colStart + 1) < (this.column + 1)){
             tIndex = this.getTokenIndex(this.boardTokens[index].rowStart + 1, this.boardTokens[index].colStart + 1)
             this.revealSpace(tIndex)
         }
@@ -253,7 +253,7 @@ class Sweeper {
             tIndex = this.getTokenIndex(this.boardTokens[index].rowStart, this.boardTokens[index].colStart - 1)
             this.revealSpace(tIndex)
         }
-        if((this.boardTokens[index].colStart + 1) < (this.column + 2)){
+        if((this.boardTokens[index].colStart + 1) < (this.column + 1)){
             tIndex = this.getTokenIndex(this.boardTokens[index].rowStart, this.boardTokens[index].colStart + 1)
             this.revealSpace(tIndex)
         }
@@ -322,7 +322,7 @@ const testBoard = () => {
 const testReveal = (e) => {
     //console.log(sweep.boardTokens[0])
     sweep.revealSquare(e.target)
-    //console.log(e.target)
+    console.log(e.target)
 }
 
 const testFlagToggle = (e) => {
