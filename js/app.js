@@ -1,4 +1,4 @@
-console.log("Hello!")
+//console.log("Hello!")
 
 // DOM VARIABLES //
 const colors = [
@@ -17,6 +17,7 @@ const colors = [
 const boardBtn = document.getElementById('makeBoard')
 const boardEl = document.getElementById('board')
 const revealBtn = document.getElementById('reveal')
+const flagEl = document.getElementById('flags')
 
 // Sweeper CLASS //
 class Sweeper {
@@ -24,6 +25,7 @@ class Sweeper {
         this.row = row
         this.column = column
         this.bomb = bomb
+        this.flag = bomb
         this.gameBoard = []
         this.boardTokens = []
         this.win = false
@@ -35,6 +37,9 @@ class Sweeper {
         this.row = rowNum
         this.column = columnNum
         this.bomb = bombNum
+        this.flag = bombNum
+
+        this.updateFlagCount()
 
         for(let i = 0; i < this.row; i++){
             const rows = []
@@ -81,6 +86,9 @@ class Sweeper {
     clearBoard () {
         while(this.gameBoard.length !== 0){
             this.gameBoard.pop()
+        }
+        while(this.boardTokens.length !== 0){
+            this.boardTokens.pop()
         }
     }
 
@@ -142,6 +150,7 @@ class Sweeper {
                 }
 
                 boardPiece.isRevealed = false
+                boardPiece.isFlagged = false
 
                 this.boardTokens.push(boardPiece)
             }
@@ -187,32 +196,33 @@ class Sweeper {
             })
             
             let idxLoc = this.getTokenIndex(gridA[0], gridA[1])
-            console.log(idxLoc)
+            //console.log(idxLoc)
             //console.log(this.boardTokens[idxLoc])
             this.revealSpace(idxLoc)
         }
     }
 
     revealSpace (index) {
-        if(!this.boardTokens[index].isRevealed){
+        if(!this.boardTokens[index].isRevealed && !this.boardTokens[index].isFlagged){
             this.boardTokens[index].isRevealed = true
+            this.boardTokens[index].squareEl.classList.add('revealed')
             if(this.boardTokens[index].number >= 0){
                 this.boardTokens[index].squareEl.style.backgroundColor = colors[this.boardTokens[index].number]
             }else{
                 this.boardTokens[index].squareEl.style.backgroundColor = colors[9]
             }
-            console.log("Revealed!")
+            //console.log("Revealed!")
             if(this.boardTokens[index].squareEl.classList.contains('empty')){
                 this.flood(index)
             }else if(this.boardTokens[index].squareEl.classList.contains('bomb')){
                 console.log('bomb!')
             }
-            console.log(this.boardTokens[index])
+            //console.log(this.boardTokens[index])
         }
     }
 
     flood (index) {
-        console.log('flood!')
+        //console.log('flood!')
         //console.log(this.boardTokens[index])
         let tIndex = 0
         if((this.boardTokens[index].rowStart - 1) >= 2){
@@ -259,6 +269,43 @@ class Sweeper {
         })
         return index
     }
+
+    updateFlagCount () {
+        let flagNum = ''
+        if(this.flag < 10) {
+            flagNum += '00'
+        }else if(this.flag < 100){
+            flagNum += '0'
+        }
+        flagNum += this.flag
+        flagEl.innerText = flagNum
+    }
+
+    toggleFlag (elem) {
+        if(elem.classList.contains('square')){
+            //console.log(square)
+            if(!elem.classList.contains('revealed')){
+                let gridA = elem.style.gridArea.split(" / ")
+                gridA = gridA.map((i) => {
+                    return parseInt(i)
+                })
+
+                let idxLoc = this.getTokenIndex(gridA[0], gridA[1])
+                //console.log(this.boardTokens)
+                if(this.boardTokens[idxLoc].isFlagged){
+                    this.boardTokens[idxLoc].isFlagged = false
+                    this.boardTokens[idxLoc].squareEl.style.backgroundColor = '#333333'
+                    this.flag++
+                    this.updateFlagCount()
+                }else if (this.flag > 0){
+                    this.boardTokens[idxLoc].isFlagged = true
+                    this.boardTokens[idxLoc].squareEl.style.backgroundColor = 'coral'
+                    this.flag--
+                    this.updateFlagCount()
+                }
+            }
+        }
+    }
 }
 
 const sweep = new Sweeper()
@@ -276,9 +323,28 @@ const testReveal = (e) => {
     //console.log(sweep.boardTokens[0])
     sweep.revealSquare(e.target)
     //console.log(e.target)
+}
 
+const testFlagToggle = (e) => {
+    
 }
 
 // DOM EVENTS //
 boardBtn.addEventListener('click', testBoard)
 boardEl.addEventListener('click', testReveal)
+//boardEl.addEventListener('keydown', testFlagToggle)
+
+//Credit to https://stackoverflow.com/questions/70840870/trigger-click-on-keypress-on-hovered-element
+var positionHovered = []
+
+document.addEventListener('mousemove', (e) => {
+    positionHovered = [e.clientX, e.clientY]
+})
+
+document.addEventListener('keydown', (event) => {
+    if(event.code === 'KeyX'){
+        //console.log(event.code)
+        let elem = document.elementFromPoint(positionHovered[0], positionHovered[1])
+        sweep.toggleFlag(elem)
+    }
+})
