@@ -169,6 +169,9 @@ class Sweeper {
             // }
 
             squareEl.style.backgroundColor = '#333333'
+            squareEl.style.fontFamily = "'Caprasimo', cursive"
+            squareEl.style.fontSize = '40px'
+            squareEl.style.textAlign = 'center'
             
             squareEl.style.gridColumn = `${this.boardTokens[i].colStart} / ${this.boardTokens[i].colEnd}`
             squareEl.style.gridRow = `${this.boardTokens[i].rowStart} / ${this.boardTokens[i].rowEnd}`
@@ -206,10 +209,16 @@ class Sweeper {
         if(!this.boardTokens[index].isRevealed && !this.boardTokens[index].isFlagged){
             this.boardTokens[index].isRevealed = true
             this.boardTokens[index].squareEl.classList.add('revealed')
-            if(this.boardTokens[index].number >= 0){
-                this.boardTokens[index].squareEl.style.backgroundColor = colors[this.boardTokens[index].number]
-            }else{
-                this.boardTokens[index].squareEl.style.backgroundColor = colors[9]
+
+            this.boardTokens[index].squareEl.style.backgroundColor = colors[0]
+            if(this.boardTokens[index].number > 0){
+                this.boardTokens[index].squareEl.style.color = colors[this.boardTokens[index].number]
+                this.boardTokens[index].squareEl.innerText = `${this.boardTokens[index].number}`
+            }else if(this.boardTokens[index].number === 0){
+                this.boardTokens[index].squareEl.style.color = colors[this.boardTokens[index].number]
+            }else {
+                this.boardTokens[index].squareEl.style.color = colors[9]
+                this.boardTokens[index].squareEl.innerText = 'B'
             }
             //console.log("Revealed!")
             if(this.boardTokens[index].squareEl.classList.contains('empty')){
