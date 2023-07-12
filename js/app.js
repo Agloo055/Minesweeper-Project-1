@@ -26,6 +26,12 @@ const timeEl = document.getElementById('timer')
 
 const resultsEl = document.getElementById('results')
 
+const toggleRulesBtn  = document.getElementById('toggleRules')
+const toggleControlsBtn  = document.getElementById('toggleControls')
+
+const rulesEl = document.getElementById('intructions')
+const controlsEl = document.getElementById('controls')
+
 // Sweeper CLASS //
 class Sweeper {
     constructor(row=3,column=3,bomb=1) {
@@ -456,6 +462,30 @@ const changeHard = () => {
     sweep.constructBoardEls()
 }
 
+const toggleRules = () => {
+    //console.log(rulesEl)
+    if(rulesEl.classList.contains('is-hidden')){
+        if(!controlsEl.classList.contains('is-hidden')){
+            controlsEl.classList.add('is-hidden')
+        }
+        //console.log('yep')
+        rulesEl.classList.remove('is-hidden')
+    }else{
+        rulesEl.classList.add('is-hidden')
+    }
+}
+
+const toggleControls = () => {
+    if(controlsEl.classList.contains('is-hidden')){
+        if(!rulesEl.classList.contains('is-hidden')){
+            rulesEl.classList.add('is-hidden')
+        }
+        controlsEl.classList.remove('is-hidden')
+    }else{
+        controlsEl.classList.add('is-hidden')
+    }
+}
+
 // START //
 sweep.makeBoard(9, 9, 10)
 sweep.constructBoardObj()
@@ -469,6 +499,9 @@ beginnerBtn.addEventListener('click', changeBeginner)
 intermediateBtn.addEventListener('click', changeIntermediate)
 hardBtn.addEventListener('click', changeHard)
 //boardEl.addEventListener('keydown', testFlagToggle)
+
+toggleRulesBtn.addEventListener('click', toggleRules)
+toggleControlsBtn.addEventListener('click', toggleControls)
 
 //Credit to https://stackoverflow.com/questions/70840870/trigger-click-on-keypress-on-hovered-element
 var positionHovered = []

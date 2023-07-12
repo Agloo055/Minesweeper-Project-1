@@ -58,3 +58,8 @@
     color: red;
     font-size: 25px;
 }
+
+.is-hidden {
+    display: none;
+    opacity: 0;
+}

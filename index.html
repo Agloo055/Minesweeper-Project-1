@@ -12,7 +12,19 @@
 </head>
 <body>
     <h1>Minesweeper!</h1>
-    <div id="">
+    <div id="rulesButtons">
+        <input type="button" id="toggleRules" value="Show rules" />
+        <input type="button" id="toggleControls" value="Show controls" />
+    </div>
+    <div id="rulesText">
+        <p class="is-hidden" id="intructions">
+            The rules: It Minesweeper - Really Cool
+        </p>
+        <p class="is-hidden" id="controls">
+            The controls: No bombs plz
+        </p>
+    </div>
+    <div id="difficulties">
         <input type="button" class="changeBoard" id="beginner" value="Easy" />
         <input type="button" class="changeBoard" id="intermediate" value="Intermediate" />
         <input type="button" class="changeBoard" id="hard" value="Hard" />
