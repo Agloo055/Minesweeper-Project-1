@@ -18,6 +18,7 @@ const boardBtn = document.getElementById('makeBoard')
 const boardEl = document.getElementById('board')
 const revealBtn = document.getElementById('reveal')
 const flagEl = document.getElementById('flags')
+const timeEl = document.getElementById('timer')
 
 // Sweeper CLASS //
 class Sweeper {
@@ -26,8 +27,15 @@ class Sweeper {
         this.column = column
         this.bomb = bomb
         this.flag = bomb
+        this.unrevealed = 0
+
+        this.timer = 0
+        this.time = 0
+        this.hasTimeStart = false
+
         this.gameBoard = []
         this.boardTokens = []
+
         this.win = false
         this.loss = false
         this.gameOver = false
@@ -38,6 +46,7 @@ class Sweeper {
         this.column = columnNum
         this.bomb = bombNum
         this.flag = bombNum
+        this.unrevealed = (this.row * this.column) - this.bomb
 
         this.updateFlagCount()
 
@@ -90,6 +99,10 @@ class Sweeper {
         while(this.boardTokens.length !== 0){
             this.boardTokens.pop()
         }
+        clearInterval(this.timer)
+        this.time = 0
+        timeEl.innerText = '000'
+        this.hasTimeStart = false
     }
 
     updateRadars (bRow, bColumn) {
@@ -192,6 +205,9 @@ class Sweeper {
 
     revealSquare (square) {
         if(square.classList.contains('square')){
+            if(!this.hasTimeStart){
+                this.startTimer()
+            }
             //console.log(square)
             let gridA = square.style.gridArea.split(" / ")
             gridA = gridA.map((i) => {
@@ -210,6 +226,11 @@ class Sweeper {
             this.boardTokens[index].isRevealed = true
             this.boardTokens[index].squareEl.classList.add('revealed')
 
+            if(!this.boardTokens[index].squareEl.classList.contains('bomb')){
+                this.unrevealed--
+                //console.log(this.unrevealed)
+            }
+
             this.boardTokens[index].squareEl.style.backgroundColor = colors[0]
             if(this.boardTokens[index].number > 0){
                 this.boardTokens[index].squareEl.style.color = colors[this.boardTokens[index].number]
@@ -225,8 +246,11 @@ class Sweeper {
                 this.flood(index)
             }else if(this.boardTokens[index].squareEl.classList.contains('bomb')){
                 console.log('bomb!')
+                this.loss = true
             }
             //console.log(this.boardTokens[index])
+            this.checkGameState(index)
+
         }
     }
 
@@ -303,26 +327,65 @@ class Sweeper {
                 //console.log(this.boardTokens)
                 if(this.boardTokens[idxLoc].isFlagged){
                     this.boardTokens[idxLoc].isFlagged = false
-                    this.boardTokens[idxLoc].squareEl.style.backgroundColor = '#333333'
+                    //this.boardTokens[idxLoc].squareEl.style.backgroundColor = '#333333'
+                    this.boardTokens[idxLoc].squareEl.innerText = ''
                     this.flag++
                     this.updateFlagCount()
                 }else if (this.flag > 0){
                     this.boardTokens[idxLoc].isFlagged = true
-                    this.boardTokens[idxLoc].squareEl.style.backgroundColor = 'coral'
+                    this.boardTokens[idxLoc].squareEl.style.color = 'blueviolet'
+                    this.boardTokens[idxLoc].squareEl.innerText = 'F'
                     this.flag--
                     this.updateFlagCount()
                 }
             }
         }
     }
+
+    updateTime(){
+        if(this.time === NaN || this.time === undefined){
+            this.time = 0
+        }
+        this.time++
+        if(time >= 1000){
+            clearInterval(this.timer)
+        }else {
+            let timeNum = ''
+            if(this.time < 10) {
+                timeNum += '00'
+            }else if(this.time < 100){
+                timeNum += '0'
+            }
+            timeNum += this.time
+            timeEl.innerText = timeNum
+        }
+    }
+
+    startTimer(){
+        this.hasTimeStart = true
+        this.timer = setInterval(this.updateTime, 1000)
+    }
+
+    checkGameState(index){
+        if(this.loss){
+            this.gameOver = true
+        }else if(this.unrevealed <= 0){
+            this.win = true
+            this.gameOver = true
+        }
+
+        if(this.gameOver){
+            clearInterval(this.timer)
+        }
+    }
 }
 
 const sweep = new Sweeper()
 
-// Tests //
-const testBoard = () => {
+// BUTTON EVENTS //
+const reset = () => {
     sweep.clearBoard()
-    sweep.makeBoard(9,9,10)
+    sweep.makeBoard(sweep.row, sweep.column, sweep.bomb)
     sweep.constructBoardObj()
     sweep.constructBoardEls()
     //console.log(sweep.boardTokens)
@@ -331,15 +394,20 @@ const testBoard = () => {
 const testReveal = (e) => {
     //console.log(sweep.boardTokens[0])
     sweep.revealSquare(e.target)
-    console.log(e.target)
+    //console.log(e.target)
 }
 
 const testFlagToggle = (e) => {
     
 }
 
+// START //
+sweep.makeBoard(9, 9, 10)
+sweep.constructBoardObj()
+sweep.constructBoardEls()
+
 // DOM EVENTS //
-boardBtn.addEventListener('click', testBoard)
+boardBtn.addEventListener('click', reset)
 boardEl.addEventListener('click', testReveal)
 //boardEl.addEventListener('keydown', testFlagToggle)
 
