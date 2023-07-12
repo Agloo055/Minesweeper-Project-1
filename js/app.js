@@ -16,7 +16,7 @@ const colors = [
 
 const boardBtn = document.getElementById('makeBoard')
 const boardEl = document.getElementById('board')
-const revealBtn = document.getElementById('reveal')
+const changeBoardBtn = document.getElementById('changeBoard')
 const flagEl = document.getElementById('flags')
 const timeEl = document.getElementById('timer')
 
@@ -93,6 +93,11 @@ class Sweeper {
     }
 
     clearBoard () {
+        this.time = 0
+        timeEl.innerText = '000'
+        this.hasTimeStart = false
+        this.loss = false
+        this.win = false
         while(this.gameBoard.length !== 0){
             this.gameBoard.pop()
         }
@@ -100,9 +105,6 @@ class Sweeper {
             this.boardTokens.pop()
         }
         clearInterval(this.timer)
-        this.time = 0
-        timeEl.innerText = '000'
-        this.hasTimeStart = false
     }
 
     updateRadars (bRow, bColumn) {
@@ -205,6 +207,7 @@ class Sweeper {
 
     revealSquare (square) {
         if(square.classList.contains('square')){
+            console.log(this.hasTimeStart)
             if(!this.hasTimeStart){
                 this.startTimer()
             }
@@ -344,6 +347,7 @@ class Sweeper {
 
     updateTime(){
         if(this.time === NaN || this.time === undefined){
+            console.log("Hello")
             this.time = 0
         }
         this.time++
@@ -362,11 +366,15 @@ class Sweeper {
     }
 
     startTimer(){
+        console.log("Hi")
         this.hasTimeStart = true
+        this.time = 0
         this.timer = setInterval(this.updateTime, 1000)
     }
 
     checkGameState(index){
+        console.log(`win: ${this.win}
+        loss: ${this.loss}`)
         if(this.loss){
             this.gameOver = true
         }else if(this.unrevealed <= 0){
@@ -391,14 +399,17 @@ const reset = () => {
     //console.log(sweep.boardTokens)
 }
 
-const testReveal = (e) => {
+const reveal = (e) => {
     //console.log(sweep.boardTokens[0])
     sweep.revealSquare(e.target)
     //console.log(e.target)
 }
 
-const testFlagToggle = (e) => {
-    
+const changeBoard = () => {
+    sweep.clearBoard()
+    sweep.makeBoard(16, 16, 40)
+    sweep.constructBoardObj()
+    sweep.constructBoardEls()
 }
 
 // START //
@@ -408,7 +419,8 @@ sweep.constructBoardEls()
 
 // DOM EVENTS //
 boardBtn.addEventListener('click', reset)
-boardEl.addEventListener('click', testReveal)
+boardEl.addEventListener('click', reveal)
+changeBoardBtn.addEventListener('click', changeBoard)
 //boardEl.addEventListener('keydown', testFlagToggle)
 
 //Credit to https://stackoverflow.com/questions/70840870/trigger-click-on-keypress-on-hovered-element
