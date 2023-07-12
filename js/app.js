@@ -261,9 +261,6 @@ class Sweeper {
                 this.boardTokens[index].squareEl.innerText = `${this.boardTokens[index].number}`
             }else if(this.boardTokens[index].number === 0){
                 this.boardTokens[index].squareEl.style.color = colors[this.boardTokens[index].number]
-            }else {
-                this.boardTokens[index].squareEl.style.color = colors[9]
-                this.boardTokens[index].squareEl.innerText = 'B'
             }
             //console.log("Revealed!")
             if(this.boardTokens[index].squareEl.classList.contains('empty')){
@@ -415,8 +412,27 @@ class Sweeper {
             let timeNum = parseInt(timeEl.innerText)
 
             if(this.win){
+                for(let i = 0; i < this.boardTokens.length; i++){
+                    if(!this.boardTokens[i].squareEl.classList.contains('revealed') && !this.boardTokens[i].isFlagged){
+                        this.toggleFlag(this.boardTokens[i].squareEl)
+                    }
+                }
                 resultsEl.innerText = `Congrats! You completed the board in ${timeNum} seconds!`
+            
             }else if(this.loss){
+                for(let i = 0; i < this.boardTokens.length; i++){
+                    if(i === index){
+                        
+                        this.boardTokens[i].squareEl.style.backgroundColor = colors[9]
+                        this.boardTokens[i].squareEl.style.color = 'black'
+                        this.boardTokens[i].squareEl.innerText = 'B'
+                    } else if(this.boardTokens[i].isBomb){
+
+                        this.boardTokens[i].squareEl.style.backgroundColor = colors[0]
+                        this.boardTokens[i].squareEl.style.color = colors[9]
+                        this.boardTokens[i].squareEl.innerText = 'B'
+                    }
+                }
                 resultsEl.innerText = `Too bad!`
             }
         }
@@ -514,6 +530,8 @@ document.addEventListener('keydown', (event) => {
     if(event.code === 'KeyX'){
         //console.log(event.code)
         let elem = document.elementFromPoint(positionHovered[0], positionHovered[1])
-        sweep.toggleFlag(elem)
+        if(!sweep.gameOver){
+            sweep.toggleFlag(elem)
+        }
     }
 })

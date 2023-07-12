@@ -10,40 +10,6 @@
     background-color: darkgray;
 }
 
-/*.one {
-    background-color: red;
-    grid-column: 1 / 2;
-    grid-row: 5 / 6;
-}
-  
-.two {
-    background-color: green;
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
-}
-  
-.three {
-    background-color: blue;
-    grid-column: 3 / 4;
-    grid-row: 2 / 3;
-}
-  
-.four {
-    background-color: yellow;
-    grid-column: 2 / 3;
-    grid-row: 3 / 4;
-}
-.five {
-    background-color: purple;
-    grid-column: 1 / 2;
-    grid-row: 3 / 4;
-}
-.six {
-    background-color: teal;
-    grid-column: 4 / 5;
-    grid-row: 3 / 4;
-}*/
-
 #info {
     grid-area: info;
     display: flex;
@@ -62,4 +28,12 @@
 .is-hidden {
     display: none;
     opacity: 0;
+}
+
+.multiline{
+    white-space: pre-wrap;
+}
+
+span{
+    font-weight: bold;
 }
