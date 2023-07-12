@@ -16,7 +16,11 @@ const colors = [
 
 const boardBtn = document.getElementById('makeBoard')
 const boardEl = document.getElementById('board')
-const changeBoardBtn = document.getElementById('changeBoard')
+
+const beginnerBtn = document.getElementById('beginner')
+const intermediateBtn = document.getElementById('intermediate')
+const hardBtn = document.getElementById('hard')
+
 const flagEl = document.getElementById('flags')
 const timeEl = document.getElementById('timer')
 
@@ -108,7 +112,8 @@ class Sweeper {
             this.gameBoard.pop()
         }
         while(this.boardTokens.length !== 0){
-            this.boardTokens.pop()
+            let token = this.boardTokens.pop()
+            token.squareEl.remove()
         }
     }
 
@@ -418,9 +423,23 @@ const reveal = (e) => {
     //console.log(e.target)
 }
 
-const changeBoard = () => {
+const changeBeginner = () => {
+    sweep.clearBoard()
+    sweep.makeBoard(9, 9, 10)
+    sweep.constructBoardObj()
+    sweep.constructBoardEls()
+}
+
+const changeIntermediate = () => {
     sweep.clearBoard()
     sweep.makeBoard(16, 16, 40)
+    sweep.constructBoardObj()
+    sweep.constructBoardEls()
+}
+
+const changeHard = () => {
+    sweep.clearBoard()
+    sweep.makeBoard(16, 30, 99)
     sweep.constructBoardObj()
     sweep.constructBoardEls()
 }
@@ -433,7 +452,10 @@ sweep.constructBoardEls()
 // DOM EVENTS //
 boardBtn.addEventListener('click', reset)
 boardEl.addEventListener('click', reveal)
-changeBoardBtn.addEventListener('click', changeBoard)
+
+beginnerBtn.addEventListener('click', changeBeginner)
+intermediateBtn.addEventListener('click', changeIntermediate)
+hardBtn.addEventListener('click', changeHard)
 //boardEl.addEventListener('keydown', testFlagToggle)
 
 //Credit to https://stackoverflow.com/questions/70840870/trigger-click-on-keypress-on-hovered-element
