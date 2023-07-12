@@ -8,11 +8,11 @@ Welcome to Minesweeper! This game is my version of the classic puzzle game where
 
 ## Screenshots
 
-![Screenshot](https://imgur.com/KMMK3QD)
+![Screenshot](assets/images/Screenshot.png)
 
 ### Wireframe
 
-![Wireframe](https://imgur.com/xbZN1yx)
+![Wireframe](assets/images/Wireframe.png)
 
 ## Technologies Used
     -HTML
