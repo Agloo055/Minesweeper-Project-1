@@ -24,6 +24,8 @@ const hardBtn = document.getElementById('hard')
 const flagEl = document.getElementById('flags')
 const timeEl = document.getElementById('timer')
 
+const resultsEl = document.getElementById('results')
+
 // Sweeper CLASS //
 class Sweeper {
     constructor(row=3,column=3,bomb=1) {
@@ -108,6 +110,9 @@ class Sweeper {
         this.loss = false
         this.win = false
         this.gameOver = false
+
+        resultsEl.innerText = ''
+
         while(this.gameBoard.length !== 0){
             this.gameBoard.pop()
         }
@@ -216,7 +221,7 @@ class Sweeper {
     }
 
     revealSquare (square) {
-        if(square.classList.contains('square')){
+        if(square.classList.contains('square') && !this.gameOver){
             console.log(this.hasTimeStart)
             if(!this.hasTimeStart){
                 this.startTimer()
@@ -401,6 +406,13 @@ class Sweeper {
 
         if(this.gameOver){
             clearInterval(this.timer)
+            let timeNum = parseInt(timeEl.innerText)
+
+            if(this.win){
+                resultsEl.innerText = `Congrats! You completed the board in ${timeNum} seconds!`
+            }else if(this.loss){
+                resultsEl.innerText = `Too bad!`
+            }
         }
     }
 }
