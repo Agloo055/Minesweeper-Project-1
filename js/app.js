@@ -42,6 +42,8 @@ class Sweeper {
     }
 
     makeBoard (rowNum, columnNum, bombNum) {
+        this.clearBoard()
+
         this.row = rowNum
         this.column = columnNum
         this.bomb = bombNum
@@ -95,16 +97,19 @@ class Sweeper {
     clearBoard () {
         this.time = 0
         timeEl.innerText = '000'
+        if(this.hasTimeStart){
+            clearInterval(this.timer)
+        }
         this.hasTimeStart = false
         this.loss = false
         this.win = false
+        this.gameOver = false
         while(this.gameBoard.length !== 0){
             this.gameBoard.pop()
         }
         while(this.boardTokens.length !== 0){
             this.boardTokens.pop()
         }
-        clearInterval(this.timer)
     }
 
     updateRadars (bRow, bColumn) {
@@ -345,31 +350,38 @@ class Sweeper {
         }
     }
 
-    updateTime(){
-        if(this.time === NaN || this.time === undefined){
-            console.log("Hello")
-            this.time = 0
-        }
-        this.time++
-        if(time >= 1000){
-            clearInterval(this.timer)
-        }else {
-            let timeNum = ''
-            if(this.time < 10) {
-                timeNum += '00'
-            }else if(this.time < 100){
-                timeNum += '0'
-            }
-            timeNum += this.time
-            timeEl.innerText = timeNum
-        }
-    }
-
     startTimer(){
         console.log("Hi")
         this.hasTimeStart = true
-        this.time = 0
-        this.timer = setInterval(this.updateTime, 1000)
+        let time = this.time
+        let timer = this.timer
+        timer = setInterval(() => {
+            // console.log(this)
+            // if(this.time === NaN || ttime === undefined || this.hasTimeStart === undefined){
+            //     console.log("Hello")
+            //     this.time = 0
+            // }
+            //this.hasTimeStart = true
+            //console.log(time)
+            time++
+            //console.log(time)
+            if(time >= 1000){
+                clearInterval(timer)
+            }else {
+                //console.log(time)
+                let timeNum = ''
+                if(time < 10) {
+                    timeNum += '00'
+                }else if(time < 100){
+                    timeNum += '0'
+                }
+                timeNum += time
+                timeEl.innerText = timeNum
+            }
+        }, 1000)
+        this.timer = timer
+        console.log(this.timer)
+        console.log(this.time)
     }
 
     checkGameState(index){
@@ -396,6 +408,7 @@ const reset = () => {
     sweep.makeBoard(sweep.row, sweep.column, sweep.bomb)
     sweep.constructBoardObj()
     sweep.constructBoardEls()
+    console.log(sweep.hasTimeStart)
     //console.log(sweep.boardTokens)
 }
 
