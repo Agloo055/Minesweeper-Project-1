@@ -410,6 +410,9 @@ class Sweeper {
                         this.boardTokens[i].squareEl.style.backgroundColor = colors[0]
                         this.boardTokens[i].squareEl.style.color = colors[9]
                         this.boardTokens[i].squareEl.innerText = 'B'
+                    } else if(this.boardTokens[i].isFlagged){
+                        this.boardTokens[i].squareEl.style.backgroundColor = 'darkred'
+                        this.boardTokens[i].squareEl.style.color = 'black'
                     }
                 }
                 resultsEl.classList.remove('is-hidden')
