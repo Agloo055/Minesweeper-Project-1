@@ -115,6 +115,7 @@ class Sweeper {
         this.gameOver = false
 
         resultsEl.innerText = ''
+        resultsEl.classList.add('is-hidden')
 
         while(this.gameBoard.length !== 0){
             this.gameBoard.pop()
@@ -394,6 +395,7 @@ class Sweeper {
                         this.toggleFlag(this.boardTokens[i].squareEl)
                     }
                 }
+                resultsEl.classList.remove('is-hidden')
                 resultsEl.innerText = `Congrats! You completed the board in ${timeNum} seconds!`
             
             }else if(this.loss){
@@ -410,6 +412,7 @@ class Sweeper {
                         this.boardTokens[i].squareEl.innerText = 'B'
                     }
                 }
+                resultsEl.classList.remove('is-hidden')
                 resultsEl.innerText = `Too bad!`
             }
         }
