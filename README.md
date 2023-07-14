@@ -6,6 +6,8 @@ Welcome to Minesweeper! This game is my version of the classic puzzle game where
 ## Getting Started
 [**Link to Site**] (https://agloo055.github.io/Minesweeper-Project-1/)
 
+[**Credit for Event Listener**] (https://stackoverflow.com/questions/70840870/trigger-click-on-keypress-on-hovered-element)
+
 ## Screenshots
 
 ![Screenshot](assets/images/Screenshot.png)

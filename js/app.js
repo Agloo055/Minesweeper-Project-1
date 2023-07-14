@@ -1,6 +1,6 @@
 //console.log("Hello!")
 
-// DOM VARIABLES //
+// COLORS for RADAR //
 const colors = [
     'gray',
     'blue',
@@ -14,6 +14,7 @@ const colors = [
     'red'
 ]
 
+// DOM VARIABLES //
 const boardBtn = document.getElementById('makeBoard')
 const boardEl = document.getElementById('board')
 
@@ -53,6 +54,7 @@ class Sweeper {
         this.gameOver = false
     }
 
+    // MAKE BOARD //
     makeBoard (rowNum, columnNum, bombNum) {
         this.clearBoard()
 
@@ -87,7 +89,6 @@ class Sweeper {
                 }
             }
         }
-        //console.log(this.gameBoard)
         let infoArea = '"'
         for (let i = 0; i < this.column; i++){
             infoArea += `info`
@@ -97,15 +98,11 @@ class Sweeper {
                 infoArea += '"'
             }
         }
-        // console.log(infoArea)
-        // console.log(board.style.gridTemplateAreas)
+
         boardEl.style.gridTemplateAreas = infoArea
-        // this.constructBoardObj()
-        // this.constructBoardEls()
-        // console.log(this.boardTokens)
-        // console.log(this.gameBoard)
     }
 
+    // CLEAR BOARD //
     clearBoard () {
         this.time = 0
         timeEl.innerText = '000'
@@ -128,6 +125,7 @@ class Sweeper {
         }
     }
 
+    // PLACING RADAR NUMBERS //
     updateRadars (bRow, bColumn) {
         if((bRow - 1) >= 0){
             this.updateRadar(bRow - 1, bColumn)
@@ -161,6 +159,7 @@ class Sweeper {
         }
     }
 
+    // CREATING SEARCHABLE BOARD ELEMENTS //
     constructBoardObj () {
         for(let i = 0; i < this.row; i++){
             for(let j = 0; j < this.column; j++){
@@ -198,12 +197,6 @@ class Sweeper {
 
             const squareEl = document.createElement('div')
 
-            // if(this.boardTokens[i].number >= 0){
-            //     squareEl.style.backgroundColor = colors[this.boardTokens[i].number]
-            // }else{
-            //     squareEl.style.backgroundColor = colors[9]
-            // }
-
             squareEl.style.backgroundColor = '#333333'
             squareEl.style.fontFamily = "'Caprasimo', cursive"
             squareEl.style.fontSize = '40px'
@@ -223,24 +216,21 @@ class Sweeper {
             this.boardTokens[i].squareEl = squareEl
             boardEl.appendChild(squareEl)
         }
-        //console.log(this.boardTokens)
     }
 
+    //REVEAL SQUARE FUNCTIONALITIES //
     revealSquare (square) {
         if(square.classList.contains('square') && !this.gameOver){
             console.log(this.hasTimeStart)
             if(!this.hasTimeStart){
                 this.startTimer()
             }
-            //console.log(square)
             let gridA = square.style.gridArea.split(" / ")
             gridA = gridA.map((i) => {
                 return parseInt(i)
             })
             
             let idxLoc = this.getTokenIndex(gridA[0], gridA[1])
-            //console.log(idxLoc)
-            //console.log(this.boardTokens[idxLoc])
             this.revealSpace(idxLoc)
         }
     }
@@ -252,7 +242,6 @@ class Sweeper {
 
             if(!this.boardTokens[index].squareEl.classList.contains('bomb')){
                 this.unrevealed--
-                //console.log(this.unrevealed)
             }
 
             this.boardTokens[index].squareEl.style.backgroundColor = colors[0]
@@ -262,22 +251,18 @@ class Sweeper {
             }else if(this.boardTokens[index].number === 0){
                 this.boardTokens[index].squareEl.style.color = colors[this.boardTokens[index].number]
             }
-            //console.log("Revealed!")
             if(this.boardTokens[index].squareEl.classList.contains('empty')){
                 this.flood(index)
             }else if(this.boardTokens[index].squareEl.classList.contains('bomb')){
                 console.log('bomb!')
                 this.loss = true
             }
-            //console.log(this.boardTokens[index])
             this.checkGameState(index)
 
         }
     }
 
     flood (index) {
-        //console.log('flood!')
-        //console.log(this.boardTokens[index])
         let tIndex = 0
         if((this.boardTokens[index].rowStart - 1) >= 2){
             tIndex = this.getTokenIndex(this.boardTokens[index].rowStart - 1, this.boardTokens[index].colStart)
@@ -313,6 +298,7 @@ class Sweeper {
         }
     }
 
+    // SEARCH FOR INDEX OF BOARD ELEMENT //
     getTokenIndex (rowStart, colStart){
         let index = 0
         this.boardTokens.forEach((elem, idx) => {
@@ -324,6 +310,7 @@ class Sweeper {
         return index
     }
 
+    // FLAG FUNCTIONALITIES //
     updateFlagCount () {
         let flagNum = ''
         if(this.flag < 10) {
@@ -337,7 +324,6 @@ class Sweeper {
 
     toggleFlag (elem) {
         if(elem.classList.contains('square')){
-            //console.log(square)
             if(!elem.classList.contains('revealed')){
                 let gridA = elem.style.gridArea.split(" / ")
                 gridA = gridA.map((i) => {
@@ -345,10 +331,8 @@ class Sweeper {
                 })
 
                 let idxLoc = this.getTokenIndex(gridA[0], gridA[1])
-                //console.log(this.boardTokens)
                 if(this.boardTokens[idxLoc].isFlagged){
                     this.boardTokens[idxLoc].isFlagged = false
-                    //this.boardTokens[idxLoc].squareEl.style.backgroundColor = '#333333'
                     this.boardTokens[idxLoc].squareEl.innerText = ''
                     this.flag++
                     this.updateFlagCount()
@@ -363,25 +347,17 @@ class Sweeper {
         }
     }
 
+    // START TIMER //
     startTimer(){
         console.log("Hi")
         this.hasTimeStart = true
         let time = this.time
         let timer = this.timer
         timer = setInterval(() => {
-            // console.log(this)
-            // if(this.time === NaN || ttime === undefined || this.hasTimeStart === undefined){
-            //     console.log("Hello")
-            //     this.time = 0
-            // }
-            //this.hasTimeStart = true
-            //console.log(time)
             time++
-            //console.log(time)
             if(time >= 1000){
                 clearInterval(timer)
             }else {
-                //console.log(time)
                 let timeNum = ''
                 if(time < 10) {
                     timeNum += '00'
@@ -396,7 +372,8 @@ class Sweeper {
         console.log(this.timer)
         console.log(this.time)
     }
-
+    
+    // GAME STATE CHECKER //
     checkGameState(index){
         console.log(`win: ${this.win}
         loss: ${this.loss}`)
@@ -448,13 +425,10 @@ const reset = () => {
     sweep.constructBoardObj()
     sweep.constructBoardEls()
     console.log(sweep.hasTimeStart)
-    //console.log(sweep.boardTokens)
 }
 
 const reveal = (e) => {
-    //console.log(sweep.boardTokens[0])
     sweep.revealSquare(e.target)
-    //console.log(e.target)
 }
 
 const changeBeginner = () => {
@@ -479,12 +453,10 @@ const changeHard = () => {
 }
 
 const toggleRules = () => {
-    //console.log(rulesEl)
     if(rulesEl.classList.contains('is-hidden')){
         if(!controlsEl.classList.contains('is-hidden')){
             controlsEl.classList.add('is-hidden')
         }
-        //console.log('yep')
         rulesEl.classList.remove('is-hidden')
     }else{
         rulesEl.classList.add('is-hidden')
@@ -514,7 +486,6 @@ boardEl.addEventListener('click', reveal)
 beginnerBtn.addEventListener('click', changeBeginner)
 intermediateBtn.addEventListener('click', changeIntermediate)
 hardBtn.addEventListener('click', changeHard)
-//boardEl.addEventListener('keydown', testFlagToggle)
 
 toggleRulesBtn.addEventListener('click', toggleRules)
 toggleControlsBtn.addEventListener('click', toggleControls)
@@ -528,7 +499,6 @@ document.addEventListener('mousemove', (e) => {
 
 document.addEventListener('keydown', (event) => {
     if(event.code === 'KeyX'){
-        //console.log(event.code)
         let elem = document.elementFromPoint(positionHovered[0], positionHovered[1])
         if(!sweep.gameOver){
             sweep.toggleFlag(elem)
