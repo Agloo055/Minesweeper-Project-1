@@ -10,7 +10,11 @@ Welcome to Minesweeper! This game is my version of the classic puzzle game where
 
 ## Screenshots
 
-![Screenshot](assets/images/Screenshot.png)
+# Win
+![Win Screenshot](assets/images/winScreenshot.png)
+
+# Loss
+![Loss Screenshot](assets/images/lossScreenshot.png)
 
 ### Wireframe
 
