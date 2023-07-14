@@ -401,16 +401,14 @@ class Sweeper {
             }else if(this.loss){
                 for(let i = 0; i < this.boardTokens.length; i++){
                     if(i === index){
-                        
                         this.boardTokens[i].squareEl.style.backgroundColor = colors[9]
                         this.boardTokens[i].squareEl.style.color = 'black'
                         this.boardTokens[i].squareEl.innerText = 'B'
-                    } else if(this.boardTokens[i].isBomb){
-
+                    } else if(this.boardTokens[i].isBomb && !this.boardTokens[i].isFlagged){
                         this.boardTokens[i].squareEl.style.backgroundColor = colors[0]
                         this.boardTokens[i].squareEl.style.color = colors[9]
                         this.boardTokens[i].squareEl.innerText = 'B'
-                    } else if(this.boardTokens[i].isFlagged){
+                    } else if(this.boardTokens[i].isFlagged && !this.boardTokens[i].isBomb){
                         this.boardTokens[i].squareEl.style.backgroundColor = 'darkred'
                         this.boardTokens[i].squareEl.style.color = 'black'
                     }
