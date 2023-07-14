@@ -504,7 +504,7 @@ document.addEventListener('mousemove', (e) => {
 })
 
 document.addEventListener('keydown', (event) => {
-    if(event.code === 'KeyX'){
+    if(event.code === 'Space'){
         let elem = document.elementFromPoint(positionHovered[0], positionHovered[1])
         if(!sweep.gameOver){
             sweep.toggleFlag(elem)

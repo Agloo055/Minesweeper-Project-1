@@ -10,16 +10,25 @@
 <body>
     <h1>Minesweeper!</h1>
     <div id="rulesButtons">
-        <input type="button" class="toggle" id="toggleRules" value="Show rules" />
+        <input type="button" class="toggle" id="toggleRules" value="Show intructions" />
         <input type="button" class="toggle" id="toggleControls" value="Show controls" />
     </div>
     <div id="rulesText">
-        <fieldset class="is-hidden multiline" id="intructions">The rules: 
-                It Minesweeper - 
-                Really Cool</fieldset>
-        <fieldset class="is-hidden multiline" id="controls"><span>The controls: 
-            <span class="bold">Left Click</span> to reveal a square
-            <span class="bold">Press X while mouse is over a square</span> to flag it</fieldset>
+        <ul class="is-hidden" id="intructions"><span class="bold">Intructions:</span> 
+            <li>The goal of the game is to <span class="bold">reveal all squares</span> that don't have a bomb it.</li>
+            <li><span class="bold">If the square has a number on it,</span> it means there are that many bombs in the surrounding 8 squares.</li>
+            <li><span class="bold">If the square has no number on it,</span> all surrounding squares will also be revealed until number squares are revealed or the border is hit.</li>
+            <li>You may <span class="bold">flag squares</span> that may have bombs in them, up to the number of bombs on the board.</li>
+            <li>Press <span class="bold">Easy/Intermediate/Hard</span> to change the board.</li>
+            <li>Press <span class="bold">Reset</span> to reset the board.</li>
+            <li>Number on at the <span class="bold">top-left of the board</span> shows how many flags you have left.</li>
+            <li>Number on at the <span class="bold">top-right of the board</span> shows the time.</li>
+            
+        </ul>
+        <ul class="is-hidden" id="controls"><span><span class="bold">The controls:</span> 
+            <li><span class="bold">Left Click</span> to reveal a square</li>
+            <li><span class="bold">Press SPACE while mouse is over a square</span> to flag it</li>
+        </ul>
     </div>
     <div id="difficulties">
         <input type="button" class="changeBoard" id="beginner" value="Easy" />
