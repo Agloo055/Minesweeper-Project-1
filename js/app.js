@@ -88,18 +88,7 @@ class Sweeper {
                     this.updateRadars(rRow, rColumn)
                 }
             }
-        }
-        let infoArea = '"'
-        for (let i = 0; i < this.column; i++){
-            infoArea += `info`
-            if((i+1)!== this.column){
-                infoArea += ` `
-            }else{
-                infoArea += '"'
-            }
-        }
-
-        boardEl.style.gridTemplateAreas = infoArea
+        }    
     }
 
     // CLEAR BOARD //
@@ -219,7 +208,22 @@ class Sweeper {
         }
     }
 
-    //REVEAL SQUARE FUNCTIONALITIES //
+    // EXTENDING INFO BAR
+    makeInfo () {
+        let infoArea = '"'
+        for (let i = 0; i < this.column; i++){
+            infoArea += `info`
+            if((i+1)!== this.column){
+                infoArea += ` `
+            }else{
+                infoArea += '"'
+            }
+        }
+
+        boardEl.style.gridTemplateAreas = infoArea
+    }
+
+    // REVEAL SQUARE FUNCTIONALITIES //
     revealSquare (square) {
         if(square.classList.contains('square') && !this.gameOver){
             console.log(this.hasTimeStart)
@@ -424,11 +428,10 @@ const sweep = new Sweeper()
 
 // BUTTON EVENTS //
 const reset = () => {
-    sweep.clearBoard()
     sweep.makeBoard(sweep.row, sweep.column, sweep.bomb)
+    sweep.makeInfo()
     sweep.constructBoardObj()
     sweep.constructBoardEls()
-    console.log(sweep.hasTimeStart)
 }
 
 const reveal = (e) => {
@@ -436,22 +439,22 @@ const reveal = (e) => {
 }
 
 const changeBeginner = () => {
-    sweep.clearBoard()
     sweep.makeBoard(9, 9, 10)
+    sweep.makeInfo()
     sweep.constructBoardObj()
     sweep.constructBoardEls()
 }
 
 const changeIntermediate = () => {
-    sweep.clearBoard()
     sweep.makeBoard(16, 16, 40)
+    sweep.makeInfo()
     sweep.constructBoardObj()
     sweep.constructBoardEls()
 }
 
 const changeHard = () => {
-    sweep.clearBoard()
     sweep.makeBoard(16, 30, 99)
+    sweep.makeInfo()
     sweep.constructBoardObj()
     sweep.constructBoardEls()
 }
@@ -480,6 +483,7 @@ const toggleControls = () => {
 
 // START //
 sweep.makeBoard(9, 9, 10)
+sweep.makeInfo()
 sweep.constructBoardObj()
 sweep.constructBoardEls()
 
@@ -502,7 +506,7 @@ document.addEventListener('mousemove', (e) => {
 })
 
 document.addEventListener('keydown', (event) => {
-    if(event.code === 'Space'){
+    if(event.code === 'KeyX'){
         let elem = document.elementFromPoint(positionHovered[0], positionHovered[1])
         if(!sweep.gameOver){
             sweep.toggleFlag(elem)
