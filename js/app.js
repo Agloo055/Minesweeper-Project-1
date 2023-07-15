@@ -226,7 +226,6 @@ class Sweeper {
     // REVEAL SQUARE FUNCTIONALITIES //
     revealSquare (square) {
         if(square.classList.contains('square') && !this.gameOver){
-            console.log(this.hasTimeStart)
             if(!this.hasTimeStart){
                 this.startTimer()
             }
@@ -259,7 +258,6 @@ class Sweeper {
             if(this.boardTokens[index].squareEl.classList.contains('empty')){
                 this.flood(index)
             }else if(this.boardTokens[index].squareEl.classList.contains('bomb')){
-                console.log('bomb!')
                 this.loss = true
             }
             this.checkGameState(index)
@@ -354,7 +352,6 @@ class Sweeper {
 
     // START TIMER //
     startTimer(){
-        console.log("Hi")
         this.hasTimeStart = true
         let time = this.time
         let timer = this.timer
@@ -374,14 +371,10 @@ class Sweeper {
             }
         }, 1000)
         this.timer = timer
-        console.log(this.timer)
-        console.log(this.time)
     }
     
     // GAME STATE CHECKER //
     checkGameState(index){
-        console.log(`win: ${this.win}
-        loss: ${this.loss}`)
         if(this.loss){
             this.gameOver = true
         }else if(this.unrevealed <= 0){
