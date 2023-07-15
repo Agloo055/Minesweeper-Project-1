@@ -88,7 +88,11 @@ class Sweeper {
                     this.updateRadars(rRow, rColumn)
                 }
             }
-        }    
+        }
+        
+        this.makeInfo()
+        this.constructBoardObj()
+        this.constructBoardEls()
     }
 
     // CLEAR BOARD //
@@ -420,38 +424,6 @@ class Sweeper {
 const sweep = new Sweeper()
 
 // BUTTON EVENTS //
-const reset = () => {
-    sweep.makeBoard(sweep.row, sweep.column, sweep.bomb)
-    sweep.makeInfo()
-    sweep.constructBoardObj()
-    sweep.constructBoardEls()
-}
-
-const reveal = (e) => {
-    sweep.revealSquare(e.target)
-}
-
-const changeBeginner = () => {
-    sweep.makeBoard(9, 9, 10)
-    sweep.makeInfo()
-    sweep.constructBoardObj()
-    sweep.constructBoardEls()
-}
-
-const changeIntermediate = () => {
-    sweep.makeBoard(16, 16, 40)
-    sweep.makeInfo()
-    sweep.constructBoardObj()
-    sweep.constructBoardEls()
-}
-
-const changeHard = () => {
-    sweep.makeBoard(16, 30, 99)
-    sweep.makeInfo()
-    sweep.constructBoardObj()
-    sweep.constructBoardEls()
-}
-
 const toggleRules = () => {
     if(rulesEl.classList.contains('is-hidden')){
         if(!controlsEl.classList.contains('is-hidden')){
@@ -476,17 +448,14 @@ const toggleControls = () => {
 
 // START //
 sweep.makeBoard(9, 9, 10)
-sweep.makeInfo()
-sweep.constructBoardObj()
-sweep.constructBoardEls()
 
 // DOM EVENTS //
-boardBtn.addEventListener('click', reset)
+boardBtn.addEventListener('click', () => sweep.makeBoard(sweep.row, sweep.column, sweep.bomb))
 boardEl.addEventListener('click', reveal)
 
-beginnerBtn.addEventListener('click', changeBeginner)
-intermediateBtn.addEventListener('click', changeIntermediate)
-hardBtn.addEventListener('click', changeHard)
+beginnerBtn.addEventListener('click', () => sweep.makeBoard(9, 9, 10))
+intermediateBtn.addEventListener('click', () => sweep.makeBoard(16, 16, 40))
+hardBtn.addEventListener('click', () => sweep.makeBoard(16, 30, 99))
 
 toggleRulesBtn.addEventListener('click', toggleRules)
 toggleControlsBtn.addEventListener('click', toggleControls)
