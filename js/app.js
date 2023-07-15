@@ -423,6 +423,11 @@ class Sweeper {
 
 const sweep = new Sweeper()
 
+// REVEAL //
+const reveal = (e) => {
+    sweep.revealSquare(e.target)
+}
+
 // BUTTON EVENTS //
 const toggleRules = () => {
     if(rulesEl.classList.contains('is-hidden')){
